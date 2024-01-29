@@ -11,7 +11,7 @@ import { DoughnutComponent } from "./doughnut";
 import Speedometer from "./Speedometer";
 import MapComponent from "./MapContainer";
 import WardMapComponent from "./wardMap";
-
+import ScrollableMenu from "./scrollablemenu";
 
 async function fetchDataAndPopulateCards() {
   try {
@@ -57,9 +57,6 @@ fetchDataAndPopulateCards();
 const Dashboard = () => {
   const [SelectedType, setSelectedType] = useState();
   const [speedbtn, setspeedbtn] = useState(null);
- 
-
-
 
   const handlebuttonclick = (taxtype) => {
     setSelectedType(taxtype);
@@ -83,7 +80,6 @@ const Dashboard = () => {
                         <h3 class="mb-0" id="totalRevenueValue">
                           Loading...
                         </h3>
-                       
                       </div>
                     </div>
                     <div class="col-3">
@@ -106,7 +102,6 @@ const Dashboard = () => {
                         <h3 class="mb-0" id="waterTaxValue">
                           Loading...
                         </h3>
-                       
                       </div>
                     </div>
                     <div class="col-3">
@@ -129,7 +124,6 @@ const Dashboard = () => {
                         <h3 class="mb-0" id="propertyTaxValue">
                           Loading...
                         </h3>
-                        
                       </div>
                     </div>
                     <div class="col-3">
@@ -178,14 +172,13 @@ const Dashboard = () => {
                   overflowY: "auto",
                   scrollbarWidth: "thick",
                   overflowX: "hidden",
-                
                 }}
               >
                 <div class="card-body">
                   <RegionTable />
                 </div>
                 <style>
-        {`
+                  {`
             /* WebKit Scrollbar Styles */
             .card::-webkit-scrollbar {
                 width: 8px;
@@ -197,15 +190,14 @@ const Dashboard = () => {
                 background-color:   #333333 ;
             }
         `}
-    </style>
-
+                </style>
               </div>
             </div>
             {/* map card */}
             <div class="col-md-8 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <MapComponent/>
+                  <MapComponent />
                 </div>
               </div>
             </div>
@@ -215,31 +207,78 @@ const Dashboard = () => {
             {/* progess chart */}
             <div class="col-sm-6 grid-margin">
               <div class="card">
-              
-                <div class="card-body" style={{height:"269px",alignItems:"center"}}>
-                  <ContextualExample  />
+                <div
+                  class="card-body"
+                  style={{ height: "269px", alignItems: "center" }}
+                >
+                  <ContextualExample />
                 </div>
               </div>
             </div>
             {/* speedo meter */}
             <div class="col-sm-6 grid-margin">
               <div class="card">
-              <div class="row" style={{justifyContent:"center",gap:"8px",marginBottom:"8px",marginTop:"8px"}}>
-              <button class="btn btn-primary btn-sm" style={{width:"100px"}} onClick={()=>{handlebtn('Garbage_Tax')}}>Garbage Tax</button>
-              <button  class="btn btn-primary btn-sm" style={{width:"100px"}} onClick={()=>{handlebtn('Property_Tax')}}>Property Tax</button>
-              <button class="btn btn-primary btn-sm" style={{width:"100px"}}  onClick={()=>{handlebtn('Water_Tax')}}>Water Tax</button>
-              </div>
-                  <div class="card-body"  style={{
-        width: "300px",
-        height: "229px",
-        display:"flex",
-        
-        borderRadius:"5px",
-        justifyContent:"center",
-        position:"relative",
-        margin:"auto",
-                      }}>
-                 <Speedometer  TaxSelected={speedbtn}/>
+                <div
+                  class="row"
+                  style={{
+                    justifyContent: "center",
+                    gap: "8px",
+                    marginBottom: "8px",
+                    marginTop: "8px",
+                  }}
+                >
+                  <button
+                    class="btn btn-primary btn-sm"
+                    style={{ width: "100px" }}
+                    onClick={() => {
+                      handlebtn("");
+                    }}
+                  >
+                    Overall Tax
+                  </button>
+                  <button
+                    class="btn btn-primary btn-sm"
+                    style={{ width: "100px" }}
+                    onClick={() => {
+                      handlebtn("Garbage_Tax");
+                    }}
+                  >
+                    Garbage Tax
+                  </button>
+                  <button
+                    class="btn btn-primary btn-sm"
+                    style={{ width: "100px" }}
+                    onClick={() => {
+                      handlebtn("Property_Tax");
+                    }}
+                  >
+                    Property Tax
+                  </button>
+                  <button
+                    class="btn btn-primary btn-sm"
+                    style={{ width: "100px" }}
+                    onClick={() => {
+                      handlebtn("Water_Tax");
+                    }}
+                  >
+                    Water Tax
+                  </button>
+                </div>
+                <div
+                  class="card-body"
+                  style={{
+                    width: "300px",
+                    height: "229px",
+                    display: "flex",
+
+                    borderRadius: "5px",
+                    justifyContent: "center",
+                    position: "relative",
+                    margin: "auto",
+                  }}
+                >
+                  <Speedometer TaxSelected={speedbtn} />
+                  <ScrollableMenu/>
                 </div>
               </div>
             </div>
@@ -248,7 +287,7 @@ const Dashboard = () => {
           <div className="row ">
             <div className="col-8 grid-margin">
               <div className="card" style={{ height: "71vh" }}>
-                <div style={{ width: "100%",height:"50vh",margin:"auto"}}>
+                <div style={{ width: "100%", height: "50vh", margin: "auto" }}>
                   <LineGraph />
                 </div>
               </div>
@@ -256,15 +295,37 @@ const Dashboard = () => {
             {/* pie graph */}
             <div className="col-4 grid-margin">
               <div className="card">
-                <div class="row" style={{justifyContent:"center",gap:"8px",marginBottom:"8px",marginTop:"8px"}}>
-              <button type="button" class="btn btn-primary btn-sm" style={{width:"80px"}} onClick={() => {
-                    handlebuttonclick("Paid");
-                  }}>Paid</button>
-               
-               <button type="button" class="btn btn-primary btn-sm" style={{width:"80px"}}  onClick={() => {
-                    handlebuttonclick("UnPaid");
-                  }} >Unpaid</button>
-               </div>
+                <div
+                  class="row"
+                  style={{
+                    justifyContent: "center",
+                    gap: "8px",
+                    marginBottom: "8px",
+                    marginTop: "8px",
+                  }}
+                >
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm"
+                    style={{ width: "80px" }}
+                    onClick={() => {
+                      handlebuttonclick("Paid");
+                    }}
+                  >
+                    Paid
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm"
+                    style={{ width: "80px" }}
+                    onClick={() => {
+                      handlebuttonclick("UnPaid");
+                    }}
+                  >
+                    Unpaid
+                  </button>
+                </div>
 
                 <DoughnutComponent SetType={SelectedType} />
               </div>
@@ -290,7 +351,7 @@ const Dashboard = () => {
             <div class="col-md-12 col-xl-4 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <WardMapComponent/>
+                  <WardMapComponent />
                 </div>
               </div>
             </div>

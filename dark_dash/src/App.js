@@ -15,7 +15,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/complaints" element={<ComplaintsTable/>} />
+            <Route path="/maps/complains" element={<ComplaintsTable/>} />
           </Routes>
         </div>
       </div>

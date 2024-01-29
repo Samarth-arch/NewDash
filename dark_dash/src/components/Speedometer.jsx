@@ -128,8 +128,7 @@ const Speedometer = ({ TaxSelected }) => {
           <p >Property Tax paid <h1>{calculateTaxTypePercentage('Property_Tax').toFixed(2)}%</h1></p>
         </>
       );
-    } else {
-      // Default case for overall tax
+    } else   {
       return (
         <>
           <ReactSpeedometer
@@ -145,11 +144,10 @@ const Speedometer = ({ TaxSelected }) => {
             ringWidth={15}
           />
           <p >Overall Tax paid <h1>{calculateOverallPaidPercentage().toFixed(2)}%</h1></p>
-        </>
-      );
+        </>)
+    } 
     }
-  };
-
+  
   return (
     <>
       {renderSpeedometer()}

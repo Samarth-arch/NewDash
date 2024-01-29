@@ -14,7 +14,7 @@ const Navbar = () => {
           <Link to="/">Dashboard</Link>
         </li>
         <li>
-          <Link to="/complaints">Complaints</Link>
+          <Link to="/maps/complains">Complaints</Link>
         </li>
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">

@@ -12,7 +12,6 @@ const firebaseConfig = {
   measurementId: "G-5KM5VJC4Q4"
 };
 
-
 // Initialize the Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -20,35 +19,26 @@ admin.initializeApp({
 
 const firestore = admin.firestore();
 const collectionRef = firestore.collection('tax');
+const collectionComplain = firestore.collection('complain'); 
 
-
-const toFetchDataFromDb = (callback) => {
-
- 
-  collectionRef.get().then((snapshot) => {
+const toFetchDataFromDb = (collection, callback) => {
+  collection.get().then((snapshot) => {
     const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     callback(data);
   });
 };
 
-toFetchDataFromDb((data) => {
-  console.log('Data fetched from Firestore:', data);
-});
+// toFetchDataFromDb(collectionRef, (data) => {
+//   console.log('Tax Data fetched from Firestore:', data);
+// });
 
-const filterGarbage = (callback, category, toCompare) => {
-  collectionRef
-    .where(category, '==', toCompare)
-    .get()
-    .then((snapshot) => {
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      callback(data);
-    })
-    .catch((error) => {
-      console.error('Error filtering data:', error);
-    });
-};
+// toFetchDataFromDb(collectionComplain, (data) => {
+//   console.log('Complain Data fetched from Firestore:', data);
+// });
+
 
 module.exports = {
   toFetchDataFromDb,
-  filterGarbage,
+  collectionComplain,
+  collectionRef,
 };

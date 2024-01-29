@@ -1,35 +1,19 @@
-
 const express = require('express');
 const app = express();
 const fb = require('./db');
 const port = 8080;
 const cors= require('cors');
+const bodyParser = require('body-parser');
 
+app.use(bodyParser.json());
 app.use(cors())
 
-// not to use now 
-app.get('/users', async (req, res) => {
-  try {
-    const usersSnapshot = await db.ref('/users').once('value');
-    const users = usersSnapshot.val();
-
-    if (!users) {
-      return res.status(404).json({ error: 'No data found' });
-    }
-    res.json(users);
-  } 
-  catch (error) {
-    console.error("Error in fetching data", error);
-    res.status(500).json({ error: "Internal server issue" });
-  }
-});
-
-
+const { toFetchDataFromDb, collectionRef, collectionComplain } = require('./db');
 
 // to render the data on the client side
 app.get('/maps/markers', async (req, res) => {
     try {
-      fb.toFetchDataFromDb((data) => {
+      fb.toFetchDataFromDb(collectionRef,(data) => {
         res.json(data);
       });
     } 
@@ -39,6 +23,20 @@ app.get('/maps/markers', async (req, res) => {
     }
   });
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+  
+  // to show the complaines to the user 
+  app.get('/maps/complains',(req, res)=>{
+    try {
+      fb.toFetchDataFromDb(collectionComplain,(data) => {
+        res.json(data);
+      });   
+    } catch (error) {
+          console.error("Error in fetching data", error);
+          res.status(500).json({ error: "Internal server issue" });
+        }
+  })
+
+
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
