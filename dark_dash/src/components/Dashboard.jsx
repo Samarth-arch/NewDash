@@ -40,7 +40,7 @@ async function fetchDataAndPopulateCards() {
     document.getElementById(
       "totalRevenueValue"
     ).innerText = `INR ${totalRevenue}`;
-    document.getElementById("waterTaxValue").innerText = `INR ${totalWaterTax}`;
+    document.getElementById("waterTaxValue").innerText = `₹ ${totalWaterTax}`;
     document.getElementById(
       "garbageTaxValue"
     ).innerText = `INR ${totalGarbageTax}`;
@@ -57,6 +57,12 @@ fetchDataAndPopulateCards();
 const Dashboard = () => {
   const [SelectedType, setSelectedType] = useState();
   const [speedbtn, setspeedbtn] = useState(null);
+  const [wardNumber, setwardNumber] = useState(null);
+
+  const handleclick = (ward) =>
+  {
+    setwardNumber(ward)
+  }
 
   const handlebuttonclick = (taxtype) => {
     setSelectedType(taxtype);
@@ -277,9 +283,39 @@ const Dashboard = () => {
                     margin: "auto",
                   }}
                 >
-                  <Speedometer TaxSelected={speedbtn} />
-                  <ScrollableMenu/>
-                </div>
+                  <Speedometer TaxSelected={speedbtn}  wardNumber={wardNumber}/>
+                  <div className="container">
+      <div className="row">
+        <div className="col-lg-12">
+
+          {/* Scrollable Menu */}
+          <div className="btn-group">
+            <button
+              type="button"
+              className="btn btn-default dropdown-toggle"
+              data-toggle="dropdown"
+            >
+              Ward List 
+            </button>
+            <ul
+              className="dropdown-menu scrollable-menu"
+              role="menu"
+              style={{
+                height: "auto",
+                maxHeight: "200px",
+                overflowX: "hidden",
+              }}
+            >
+              {[...Array(10).keys()].map((index) => (
+                <li key={index}>
+                  <option value={index+1} onClick={()=>{handleclick(`${index+1}`)}}> ward {index+1} </option>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>                </div>
               </div>
             </div>
           </div>

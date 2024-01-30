@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ReactSpeedometer from 'react-d3-speedometer';
+import WardMeter from './wardmeter';
 
-const Speedometer = ({ TaxSelected }) => {
+const Speedometer = ({ TaxSelected ,wardNumber}) => {
   const [data, setData] = useState([]);
 
-  console.log("selected tax is ",TaxSelected)
+  console.log("sppedometer",wardNumber)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,78 +75,167 @@ const Speedometer = ({ TaxSelected }) => {
   };
 
   const renderSpeedometer = () => {
-    if (TaxSelected === 'Water_Tax') {
-      return (
-        <>
-          <ReactSpeedometer
-            fluidWidth={false}
-            responsive={true}
-            minValue={0}
-            maxValue={100}
-            value={calculateTaxTypePercentage('Water_Tax')}
-            needleColor="#2F323A"
-            segments={5}
-            startColor="#26A1EB"
-            endColor="#26D974"
-            ringWidth={15}
-          />
-          <p >Water Tax paid <h1>{calculateTaxTypePercentage('Water_Tax').toFixed(2)}%</h1></p>
-        </>
-      );
-    } else if (TaxSelected === 'Garbage_Tax') {
-      return (
-        <>
-          <ReactSpeedometer
-            fluidWidth={false}
-            responsive={true}
-            minValue={0}
-            maxValue={100}
-            value={calculateTaxTypePercentage('Garbage_Tax')}
-            needleColor="#2F323A"
-            segments={5}
-            startColor="#26A1EB"
-            endColor="#26D974"
-            ringWidth={15}
-          />
-          <p >Garbage Tax paid <h1>{calculateTaxTypePercentage('Garbage_Tax').toFixed(2)}%</h1></p>
-        </>
-      );
-    } else if (TaxSelected === 'Property_Tax') {
-      return (
-        <>
-          <ReactSpeedometer
-            fluidWidth={false}
-            responsive={true}
-            minValue={0}
-            maxValue={100}
-            value={calculateTaxTypePercentage('Property_Tax')}
-            needleColor="#2F323A"
-            segments={5}
-            startColor="#26A1EB"
-            endColor="#26D974"
-            ringWidth={15}
-          />
-          <p >Property Tax paid <h1>{calculateTaxTypePercentage('Property_Tax').toFixed(2)}%</h1></p>
-        </>
-      );
-    } else   {
-      return (
-        <>
-          <ReactSpeedometer
-            fluidWidth={false}
-            responsive={true}
-            minValue={0}
-            maxValue={100}
-            value={calculateOverallPaidPercentage()}
-            needleColor="#2F323A"
-            segments={5}
-            startColor="#26A1EB"
-            endColor="#26D974"
-            ringWidth={15}
-          />
-          <p >Overall Tax paid <h1>{calculateOverallPaidPercentage().toFixed(2)}%</h1></p>
-        </>)
-    } 
+
+    if(wardNumber !== null)
+    {
+      const wardDataFiltered = data.filter((entry) => entry.ward === String(wardNumber));
+      const totalEntries = wardDataFiltered.length;
+
+      // Calculate total sum paid for Water Tax
+      // const totalWaterTax = ((wardDataFiltered.reduce(( entry) => entry.Water_Tax!==0))/totalEntries)*100;
+      const totalWaterTax = (wardDataFiltered.filter(entry => entry.Water_Tax !== 0).length)/totalEntries * 100;
+      const totalGarbageTax = (wardDataFiltered.filter(entry => entry.Garbage_Tax !== 0).length)/totalEntries * 100;;
+      const totalPropertyTax = (wardDataFiltered.filter(entry => entry.Property_Tax !== 0).length)/totalEntries * 100;
+      // const totalGarbageTax = ((wardDataFiltered.reduce(( entry) => entry.Garbage_Tax!==0))/totalEntries)*100;
+      // const totalPropertyTax = ((wardDataFiltered.reduce(( entry) => entry.Property_Tax!==0))/totalEntries)*100;
+  
+      // console.log(`${wardNumber} ka ${totalGarbageTax}, ${totalWaterTax}, ${totalPropertyTax} or ${totalEntries}`);
+      // Render based on TaxSelected
+      if (TaxSelected === 'Water_Tax') {
+          return (
+            <>
+              <ReactSpeedometer
+                fluidWidth={false}
+                responsive={true}
+                minValue={0}
+                maxValue={100}
+                value={totalWaterTax}
+                needleColor="#2F323A"
+                segments={5}
+                startColor="#26A1EB"
+                endColor="#26D974"
+                ringWidth={15}
+              />
+              <p >Ward {wardNumber} Water Tax paid <h1>{totalWaterTax.toFixed(2)}%</h1></p>
+            </>
+          );
+        } else if (TaxSelected === 'Garbage_Tax') {
+          return (
+            <>
+              <ReactSpeedometer
+                fluidWidth={false}
+                responsive={true}
+                minValue={0}
+                maxValue={100}
+                value={totalGarbageTax}
+                needleColor="#2F323A"
+                segments={5}
+                startColor="#26A1EB"
+                endColor="#26D974"
+                ringWidth={15}
+              />
+              <p >Ward {wardNumber} Garbage Tax paid <h1>{totalGarbageTax.toFixed(2)}%</h1></p>
+            </>
+          );
+        } else if (TaxSelected === 'Property_Tax') {
+          return (
+            <>
+              <ReactSpeedometer
+                fluidWidth={false}
+                responsive={true}
+                minValue={0}
+                maxValue={100}
+                value={totalPropertyTax}
+                needleColor="#2F323A"
+                segments={5}
+                startColor="#26A1EB"
+                endColor="#26D974"
+                ringWidth={15}
+              />
+              <p >Ward {wardNumber}Property Tax paid <h1>{totalPropertyTax.toFixed(2)}%</h1></p>
+            </>
+          );
+        } else   {
+          return (
+            <>
+              <ReactSpeedometer
+                fluidWidth={false}
+                responsive={true}
+                minValue={0}
+                maxValue={100}
+                value={calculateOverallPaidPercentage()}
+                needleColor="#2F323A"
+                segments={5}
+                startColor="#26A1EB"
+                endColor="#26D974"
+                ringWidth={15}
+              />
+              <p >Overall Tax paid <h1>{calculateOverallPaidPercentage().toFixed(2)}%</h1></p>
+            </>)
+        }     }
+    else  if (TaxSelected === 'Water_Tax') {
+        return (
+          <>
+            <ReactSpeedometer
+              fluidWidth={false}
+              responsive={true}
+              minValue={0}
+              maxValue={100}
+              value={calculateTaxTypePercentage('Water_Tax')}
+              needleColor="#2F323A"
+              segments={5}
+              startColor="#26A1EB"
+              endColor="#26D974"
+              ringWidth={15}
+            />
+            <p >Water Tax paid <h1>{calculateTaxTypePercentage('Water_Tax').toFixed(2)}%</h1></p>
+          </>
+        );
+      } else if (TaxSelected === 'Garbage_Tax') {
+        return (
+          <>
+            <ReactSpeedometer
+              fluidWidth={false}
+              responsive={true}
+              minValue={0}
+              maxValue={100}
+              value={calculateTaxTypePercentage('Garbage_Tax')}
+              needleColor="#2F323A"
+              segments={5}
+              startColor="#26A1EB"
+              endColor="#26D974"
+              ringWidth={15}
+            />
+            <p >Garbage Tax paid <h1>{calculateTaxTypePercentage('Garbage_Tax').toFixed(2)}%</h1></p>
+          </>
+        );
+      } else if (TaxSelected === 'Property_Tax') {
+        return (
+          <>
+            <ReactSpeedometer
+              fluidWidth={false}
+              responsive={true}
+              minValue={0}
+              maxValue={100}
+              value={calculateTaxTypePercentage('Property_Tax')}
+              needleColor="#2F323A"
+              segments={5}
+              startColor="#26A1EB"
+              endColor="#26D974"
+              ringWidth={15}
+            />
+            <p >Property Tax paid <h1>{calculateTaxTypePercentage('Property_Tax').toFixed(2)}%</h1></p>
+          </>
+        );
+      } else   {
+        return (
+          <>
+            <ReactSpeedometer
+              fluidWidth={false}
+              responsive={true}
+              minValue={0}
+              maxValue={100}
+              value={calculateOverallPaidPercentage()}
+              needleColor="#2F323A"
+              segments={5}
+              startColor="#26A1EB"
+              endColor="#26D974"
+              ringWidth={15}
+            />
+            <p >Overall Tax paid <h1>{calculateOverallPaidPercentage().toFixed(2)}%</h1></p>
+          </>)
+      } 
+      
     }
   
   return (
@@ -153,6 +243,6 @@ const Speedometer = ({ TaxSelected }) => {
       {renderSpeedometer()}
     </>
   );
-};
+  }
 
 export default Speedometer;

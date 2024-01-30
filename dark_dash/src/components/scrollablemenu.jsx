@@ -1,11 +1,16 @@
-import React from "react";
+import React,{useState} from "react";
 
 function ScrollableMenu() {
+
+const [ward, setward] = useState(null);
+
+const handleclick=(wardnumber)=>{
+    setward(wardnumber);
+}
   return (
     <div className="container">
       <div className="row">
         <div className="col-lg-12">
-          <h2 className="bold">Scrollable Menu</h2>
 
           {/* Scrollable Menu */}
           <div className="btn-group">
@@ -14,7 +19,7 @@ function ScrollableMenu() {
               className="btn btn-default dropdown-toggle"
               data-toggle="dropdown"
             >
-              Scrollable Menu <span className="caret"></span>
+              Menu 
             </button>
             <ul
               className="dropdown-menu scrollable-menu"
@@ -25,9 +30,9 @@ function ScrollableMenu() {
                 overflowX: "hidden",
               }}
             >
-              {[...Array(15).keys()].map((index) => (
+              {[...Array(10).keys()].map((index) => (
                 <li key={index}>
-                  <a href="#">Action</a>
+                  <option value={index+1}> ward {index+1} </option>
                 </li>
               ))}
             </ul>
