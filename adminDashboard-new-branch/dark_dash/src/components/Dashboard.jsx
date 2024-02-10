@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LineGraph } from "./LineGraph";
 import Piechart from "./Piechart";
 import RegionTable from "./RegionTable";
 import Table from "./ranked";
 import UnpaidTable from "./LeastRanked";
 import ProgressBar from "./ProgressBar";
-import { useState } from "react";
 import ContextualExample from "./ProgressBar";
 import { DoughnutComponent } from "./doughnut";
 import Speedometer from "./Speedometer";
@@ -16,13 +15,14 @@ import Card from "./Card";
 import dishaa from "./dishaa";
 import IndividualWard from "./IndividualWard";
 import IndividualWardTable from "./IndividualWardTable";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Dashboard = () => {
   const [SelectedType, setSelectedType] = useState();
   const [speedbtn, setspeedbtn] = useState(null);
-
   const [wardNumber, setwardNumber] = useState(null);
   const [datas, setDatas] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchDataAndPopulateCards() {
@@ -34,14 +34,24 @@ const Dashboard = () => {
         }
 
         const data = await response.json();
-
         setDatas(data);
+        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false); // Set loading to false in case of error
       }
     }
+
     fetchDataAndPopulateCards();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="white" size={50} />
+      </div>
+    );
+  }
 
   let totalWaterTax = datas?.reduce(
     (total, entry) => total + entry.Water_Tax,
@@ -66,29 +76,31 @@ const Dashboard = () => {
   console.log("TW", totalWaterTax);
   console.log("TR", totalRevenue);
   console.log(datas);
+
   return (
     <div style={{ cursor: "pointer", userSelect: "none" }}>
-      <div class="main-panel">
-        <div class="content-wrapper">
+      <div className="main-panel">
+        <div className="content-wrapper">
           <Card TG={totalGarbageTax} TW={totalWaterTax} TP={totalPropertyTax} />
-          <div class="row">
+          <div className="row">
             <RegionTable />
             <MapComponent />
             <IndividualWardTable datas={datas} wardNumber="2" />
           </div>
-          <div class="row" >
+          <div className="row">
             <ContextualExample data={datas} />
-            <Speedometer TaxSelected={speedbtn} wardNumber={wardNumber} data={datas}/>{" "}
+            <Speedometer
+              TaxSelected={speedbtn}
+              wardNumber={wardNumber}
+              data={datas}
+            />{" "}
           </div>
 
-          <div class="row">
-                  <LineGraph data={datas} />
-                  <DoughnutComponent
-                  data={datas}
-                  SetType={SelectedType}
-                /> 
+          <div className="row">
+            <LineGraph data={datas} />
+            <DoughnutComponent data={datas} SetType={SelectedType} />
           </div>
-          <div class="row">
+          <div className="row">
             <Table />
             <UnpaidTable />
             <WardMap datas={datas} />
