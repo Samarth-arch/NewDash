@@ -10,6 +10,7 @@ import ComplaintsTable from "./components/ComplaintsTable";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DataTable from "./components/tablematerial";
+import Tablenew from "./components/Tablenew";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: "complaints",
-        element: <DataTable />,
+        element: <Tablenew/>,
       },
     ],
   },
