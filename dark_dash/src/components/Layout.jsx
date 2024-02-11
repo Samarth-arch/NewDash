@@ -17,11 +17,11 @@ function Layout() {
   }, []); // Empty dependency array ensures this effect runs only once
 
   return (
-    <div className="container-screen">
+    <div className="container-screen bg-white">
       <LoadingBar progress={progress} height={3} color='red' />
       <SideBar />
       <div className="container-fluid">
-        <Navbar />
+        <Navbar  />
         <div>
           <Outlet />
         </div>

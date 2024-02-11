@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { wardData } from "../data/wardData";
 import { MdNotificationsActive } from "react-icons/md";
+import DarkMode from "./DarkMode/DarkMode";
 
 const Navbar = () => {
   const [data, setData] = useState(wardData);
@@ -63,12 +64,11 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
+
           <button
-            class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-            type="button"
-            data-toggle="offcanvas"
+           
           >
-            <span class="mdi mdi-format-line-spacing"></span>
+           
           </button>
         </div>
       </nav>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 
 function TableRow({wardName,Address,Contact,Title,Description}){
     return (
