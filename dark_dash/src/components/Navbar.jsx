@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { wardData } from "../data/wardData";
 import { MdNotificationsActive } from "react-icons/md";
-import DarkMode from "./DarkMode/DarkMode";
+
 
 const Navbar = () => {
   const [data, setData] = useState(wardData);
